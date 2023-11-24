@@ -1,5 +1,6 @@
 package com.restaurant.controller;
 
+import com.restaurant.model.registerUser.UserRegister;
 import com.restaurant.service.AuthenticationService;
 import com.restaurant.model.Person;
 import com.restaurant.model.auth.AuthenticationRequest;
@@ -27,17 +28,20 @@ public class AuthController {
     public ResponseEntity<?> doLogin(@RequestBody AuthenticationRequest request) {
         AuthenticationResponse authenticationResponse = new AuthenticationResponse();
         service.login(request, authenticationResponse);
-        if (authenticationResponse == null) {
-            return new ResponseEntity<>("{\"status\":\"UNAUTHORIZED\"}", HttpStatus.UNAUTHORIZED);
+        if (authenticationResponse.getStatus().equals("Bad Credentials")) {
+            return new ResponseEntity<>("{\"status\":\"BAD CREDENTIALS\"}", HttpStatus.UNAUTHORIZED);
+        }
+        if(authenticationResponse.getStatus().equals("Locked")){
+            return new ResponseEntity<>("{\"status\":\"Locked\"}", HttpStatus.LOCKED);
         }
         return ResponseEntity.ok(authenticationResponse);
     }
 
     @PostMapping("signup")
-    public ResponseEntity<?> signUp(@RequestBody Person person) {
-        System.out.println(person);
+    public ResponseEntity<?> signUp(@RequestBody UserRegister register) {
+        System.out.println(register);
         try {
-            String result = service.signUp(person);
+            String result = service.signUp(register);
             if (result.equals("User already exists")) {
                 return new ResponseEntity<String>("{\"status\":\"User already exists.\"}", HttpStatus.CONFLICT);
             }

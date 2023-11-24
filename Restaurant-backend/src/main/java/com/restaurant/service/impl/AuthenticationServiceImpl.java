@@ -3,10 +3,13 @@ package com.restaurant.service.impl;
 import com.restaurant.model.Person;
 import com.restaurant.model.auth.AuthenticationRequest;
 import com.restaurant.model.auth.AuthenticationResponse;
+import com.restaurant.model.registerUser.UserRegister;
 import com.restaurant.repository.UserRepository;
 import com.restaurant.service.AuthenticationService;
 import com.restaurant.service.JWTService;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -33,16 +36,22 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public String signUp(Person person) {
-        System.out.println(person);
-        Person personByEmail = repository.findByEmail(person.getEmail());
+    public String signUp(UserRegister userRegister) {
+        System.out.println(userRegister);
+        Person person = repository.findByEmail(userRegister.getEmail());
 
-        if(personByEmail != null){
+        if(person != null){
             return "User already exists";
         }
-        System.out.println(person.getPassword());
+        System.out.println(userRegister.getPassword());
 
-        person.setPassword(passwordEncoder.encode(person.getPassword()));
+        person = new Person();
+        person.setFirstName(userRegister.getFirstName());
+        person.setLastName(userRegister.getLastName());
+        person.setMobileNo(userRegister.getMobileNo());
+        person.setEmail(userRegister.getEmail());
+        person.setPassword(passwordEncoder.encode(userRegister.getPassword()));
+        person.setRole(userRegister.getRole());
 
         repository.save(person);
 
@@ -51,21 +60,32 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public AuthenticationResponse login(AuthenticationRequest request, AuthenticationResponse response) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword()
-                )
-        );
+        try{
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            request.getEmail(),
+                            request.getPassword()
+                    )
+            );
+        }catch (BadCredentialsException exception){
+            response.setStatus("Bad Credentials");
+            return response;
+        }catch (LockedException exception){
+            response.setStatus("Locked");
+            return response;
+        }
+
         Person person = repository.findByEmail(request.getEmail());
 
         if(person == null){
             return null;
         }
         String generateToken = jwtService.generateToken(person);
-        String generateRefreshToken = jwtService.generateRefreshToken(person);
+        String refreshToken = jwtService.generateRefreshToken(person);
 
         response.setAccessToken(generateToken);
+        response.setRefreshToken(refreshToken);
+        response.setStatus("true");
         response.setPerson(person);
 
         return response;
