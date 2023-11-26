@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/auth/")
+@CrossOrigin("*")
 public class AuthController {
 
     private AuthenticationService service;
@@ -25,9 +26,14 @@ public class AuthController {
     }
 
     @PostMapping("login")
+
     public ResponseEntity<?> doLogin(@RequestBody AuthenticationRequest request) {
         AuthenticationResponse authenticationResponse = new AuthenticationResponse();
         service.login(request, authenticationResponse);
+        System.out.println(authenticationResponse);
+        if(authenticationResponse == null)
+            return new ResponseEntity<>("{\"status\":\"Username/Email id not valid\"}", HttpStatus.BAD_REQUEST);
+
         if (authenticationResponse.getStatus().equals("Bad Credentials")) {
             return new ResponseEntity<>("{\"status\":\"BAD CREDENTIALS\"}", HttpStatus.UNAUTHORIZED);
         }
