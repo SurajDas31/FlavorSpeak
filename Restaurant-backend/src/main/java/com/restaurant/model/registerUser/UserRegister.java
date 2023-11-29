@@ -15,7 +15,6 @@ public class UserRegister {
 
     private Role role;
 
-
     public String getFirstName() {
         return firstName;
     }
