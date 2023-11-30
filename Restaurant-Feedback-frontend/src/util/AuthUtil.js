@@ -1,14 +1,30 @@
-export const isLoggedIn = () => {
-    const session = localStorage.getItem('session')
+export const REST_URL = "http://localhost:8080";
 
-    if (session == null) return false;
+export const isLoggedIn = () => {
+    const accessToken = localStorage.getItem('accessToken')
+    const refreshToken = localStorage.getItem('refreshToken')
+    const username = localStorage.getItem('username')
+
+    if (accessToken === null || accessToken === undefined
+        || refreshToken === null || refreshToken === undefined
+        || username === null || username === undefined) return false;
     return true;
 }
 
-export const logout = () => {
-    localStorage.removeItem('session');
+export const getUserName = () => {
+    return localStorage.getItem("username");
 }
 
-export const login = (data) => {
-    localStorage.setItem('session', data)
+export const logout = () => {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('username');
+
+    window.location.href = "/"
+}
+
+export const login = (accessToken, refreshToken, username) => {
+    localStorage.setItem('accessToken', accessToken)
+    localStorage.setItem('refreshToken', refreshToken)
+    localStorage.setItem('username', username)
 }

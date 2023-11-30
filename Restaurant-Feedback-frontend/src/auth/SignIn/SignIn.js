@@ -2,11 +2,39 @@ import { useState } from "react";
 import { Button, Container, FloatingLabel, Form, Row, Col } from "react-bootstrap";
 import "./SignIn.css";
 import { Link } from "react-router-dom";
+import { REST_URL, login } from "../../util/AuthUtil";
 
 export default function SignIn() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+
+    let loginHandler = async (event) => {
+        event.preventDefault();
+
+        try {
+            var res = await fetch(REST_URL + "/api/v1/auth/login", {
+                method: "POST",
+                body: JSON.stringify({
+                    email: email,
+                    password: password,
+                }),
+                headers: { "Content-Type": "application/json" }
+            })
+
+            if (res.status === 200) {
+                let data = await res.json()
+                console.log(data.accessToken);
+                login(data.accessToken, data.refreshToken, data.person.firstName + " " + data.person.lastName);
+                window.location.href = "/auth/dashboard"
+            }
+        } catch (error) {
+            console.error(error);
+        }
+
+    }
+
+
     return (
         <>
             <Container fluid>
@@ -24,7 +52,7 @@ export default function SignIn() {
                                     <Form.Control type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
                                 </FloatingLabel>
                                 <div className="SignFormBottomBar">
-                                    <Button onClick={loginHandler} variant="primary">Sign In</Button>
+                                    <Button type="submit" variant="primary">Sign In</Button>
                                     <Link to="/signup">Already have an account?</Link>
                                 </div>
                             </Form>
@@ -34,14 +62,6 @@ export default function SignIn() {
             </Container>
         </>
     );
-    function loginHandler(event) {
-        event.preventDefault();
 
-        var jsonData = JSON.stringify({
-            email: email,
-            password: password,
-        })
-        console.log(jsonData);
-    }
 }
 
