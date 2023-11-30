@@ -1,11 +1,14 @@
 package com.restaurant.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.restaurant.model.restaurant.Restaurant;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Person implements UserDetails {
@@ -27,6 +30,11 @@ public class Person implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @OneToMany()
+    @JoinTable(joinColumns = {@JoinColumn(name = "person_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "restaurant_id", referencedColumnName = "id")})
+    private Set<Restaurant> restaurant;
+
     public Role getRole() {
         return role;
     }
@@ -38,7 +46,6 @@ public class Person implements UserDetails {
     public void setId(int id) {
         this.id = id;
     }
-
 
     public int getId() {
         return id;
@@ -80,6 +87,14 @@ public class Person implements UserDetails {
         this.mobileNo = mobileNo;
     }
 
+    public Set<Restaurant> getRestaurants() {
+        return restaurant;
+    }
+
+    public void setRestaurants(Set<Restaurant> restaurant) {
+        this.restaurant = restaurant;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
@@ -117,14 +132,6 @@ public class Person implements UserDetails {
 
     @Override
     public String toString() {
-        return "Person{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", mobileNo='" + mobileNo + '\'' +
-                ", role=" + role +
-                '}';
+        return "Person{" + "id=" + id + ", firstName='" + firstName + '\'' + ", lastName='" + lastName + '\'' + ", email='" + email + '\'' + ", password='" + password + '\'' + ", mobileNo='" + mobileNo + '\'' + ", role=" + role + '}';
     }
 }
