@@ -15,6 +15,10 @@ export const getUserName = () => {
     return localStorage.getItem("username");
 }
 
+export const getAccessToken = () => {
+    return localStorage.getItem("accessToken");
+}
+
 export const logout = () => {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
