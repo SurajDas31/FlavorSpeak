@@ -18,15 +18,13 @@ const Dashboard = () => {
             navigate("/")
         }
         loadRestaurantData();
-
-    })
+    }, [])
 
     let loadRestaurantData = async () => {
 
-
         try {
             var res = await fetch(REST_URL + "/api/v1/restaurant/getAll", {
-                method: "GET",
+                method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + getAccessToken()
                 }
@@ -35,9 +33,7 @@ const Dashboard = () => {
             if (res.status === 200) {
                 let data = await res.json()
                 setRestaurant(data)
-
                 console.log(restaurant);
-
             }
         } catch (error) {
             console.error(error);
