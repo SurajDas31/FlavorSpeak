@@ -46,14 +46,14 @@ export default function SignIn() {
                         <Container>
                             <Form onSubmit={loginHandler}>
                                 <FloatingLabel controlId="floatingInput" label="Email address" className="mb-3">
-                                    <Form.Control type="email" placeholder="name@example.com" onChange={(e) => setEmail(e.target.value)} />
+                                    <Form.Control type="email" placeholder="name@example.com" onChange={(e) => setEmail(e.target.value)} required/>
                                 </FloatingLabel>
                                 <FloatingLabel controlId="floatingPassword" label="Password" className="mb-3">
-                                    <Form.Control type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
+                                    <Form.Control type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} required/>
                                 </FloatingLabel>
                                 <div className="SignFormBottomBar">
                                     <Button type="submit" variant="primary">Sign In</Button>
-                                    <Link to="/signup">Already have an account?</Link>
+                                    <Link to="/signup">Create an account?</Link>
                                 </div>
                             </Form>
                         </Container>
@@ -64,4 +64,3 @@ export default function SignIn() {
     );
 
 }
-
