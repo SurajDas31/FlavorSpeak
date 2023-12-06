@@ -7,10 +7,7 @@ import com.restaurant.model.registerUser.UserRegister;
 import com.restaurant.repository.UserRepository;
 import com.restaurant.service.AuthenticationService;
 import com.restaurant.service.JWTService;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.LockedException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -73,6 +70,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             return response;
         }catch (LockedException exception){
             response.setStatus("Locked");
+            return response;
+        }catch (InternalAuthenticationServiceException exception){
+            response.setStatus("User not found");
             return response;
         }
 

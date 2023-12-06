@@ -8,9 +8,9 @@ import { NavDropdown } from 'react-bootstrap';
 function HomeNavbar() {
     return (
 
-        <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
+        <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary" data-bs-theme="dark" bg="dark" variant="dark">
             <Container>
-                <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
+                <Navbar.Brand href="/">React-Bootstrap</Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="me-auto">
@@ -20,9 +20,7 @@ function HomeNavbar() {
                         
                         {
                             (!isLoggedIn()) ?
-                                <Nav.Link>
-                                    <Link to="/signin">Sign In</Link>
-                                </Nav.Link>
+                            <Nav.Link href="/signin">Sign in</Nav.Link>
                                 :
                                 <NavDropdown title={getUserName()} id="basic-nav-dropdown">
                                     <NavDropdown.Item href="/auth/dashboard">Dashboard</NavDropdown.Item>

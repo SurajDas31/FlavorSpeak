@@ -43,7 +43,7 @@ const Dashboard = () => {
     return (
         <>
             <HomeNavbar />
-            <Container className="mt-5">
+            <Container className="mt-5" style={{ height: '100vh' }}>
                 <CardGroup>
                     {
                         restaurant.map(r => {

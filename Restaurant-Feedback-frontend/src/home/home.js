@@ -10,9 +10,9 @@ const home = () => {
     return (
         <>
             <HomeNavbar />
-            <Carousel>
+            <Carousel interval={5000}>
                 <Carousel.Item>
-                    <Image src={Img1} xs={3} md={2} fluid />
+                    <Image src={Img1} xs={3} md={2} alt="First slide" fluid />
                     <Carousel.Caption className="caption">
                         <h3>First slide label</h3>
                         <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>

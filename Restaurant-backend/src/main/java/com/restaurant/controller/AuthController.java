@@ -31,7 +31,7 @@ public class AuthController {
         AuthenticationResponse authenticationResponse = new AuthenticationResponse();
         service.login(request, authenticationResponse);
         System.out.println(authenticationResponse);
-        if(authenticationResponse == null)
+        if(authenticationResponse.getStatus().equals("User not found"))
             return new ResponseEntity<>("{\"status\":\"Username/Email id not valid\"}", HttpStatus.BAD_REQUEST);
 
         if (authenticationResponse.getStatus().equals("Bad Credentials")) {

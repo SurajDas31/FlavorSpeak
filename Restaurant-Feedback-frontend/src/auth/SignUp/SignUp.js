@@ -1,10 +1,12 @@
-import { Button, Col, Container, FloatingLabel, Form, Row, Toast } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Alert, Button, Col, Container, FloatingLabel, Form, Row, Toast } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
 import "./SignUp.css"
 import { useState } from "react";
 import { REST_URL } from "../../util/AuthUtil";
 
 export default function SignUp() {
+
+    const navigate = useNavigate()
 
     const [firstName, setFirstName] = useState("")
     const [lastName, setLastName] = useState("")
@@ -12,7 +14,8 @@ export default function SignUp() {
     const [password, setPassword] = useState("")
     const [confirmPassword, setConfirmPassword] = useState("")
     const [mobileNo, setMobileNo] = useState("")
-
+    const [errorFlag, setErrorFlag] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
 
     const signUpHandler = async (event) => {
         event.preventDefault();
@@ -21,14 +24,12 @@ export default function SignUp() {
             var res = await fetch(REST_URL + "/api/v1/auth/signup", {
                 method: "POST",
                 body: JSON.stringify({
-
                     firstName: firstName,
                     lastName: lastName,
                     email: email,
                     password: password,
                     mobileNo: mobileNo,
                     role: "USER"
-
                 }),
                 headers: { "Content-Type": "application/json" }
             })
@@ -36,6 +37,10 @@ export default function SignUp() {
             if (res.status === 200) {
                 let data = await res.json()
                 console.log(data);
+                navigate("/signin")
+            } else if (res.status === 409) {
+                setErrorFlag(true);
+                setErrorMessage("User already present")
             }
         } catch (error) {
             console.error(error);
@@ -47,26 +52,17 @@ export default function SignUp() {
         <>
 
             <Container fluid>
-
-                <Toast>
-                    <Toast.Header>
-                        <img
-                            src="holder.js/20x20?text=%20"
-                            className="rounded me-2"
-                            alt=""
-                        />
-                        <strong className="me-auto">Bootstrap</strong>
-                        <small>11 mins ago</small>
-                    </Toast.Header>
-                    <Toast.Body>Woohoo, you're reading this text in a Toast!</Toast.Body>
-                </Toast>
                 <Row>
                     <Col sm={8} style={{ padding: 0 + 'px' }}>
                         <div className="left-bg"></div>
                     </Col>
                     <Col sm={4} className="SignUpLayout">
                         <Container>
-                            <Form >
+                            <Alert className="mb-5" key={"danger"} variant={"danger"} show={errorFlag}>
+                                {errorMessage}
+                            </Alert>
+
+                            <Form onSubmit={signUpHandler}>
                                 <FloatingLabel controlId="floatingFirstName" label="First Name" className="mb-3">
                                     <Form.Control type="text" placeholder="John" id="firstName" onChange={(e) => { setFirstName(e.target.value) }}
                                         required />
