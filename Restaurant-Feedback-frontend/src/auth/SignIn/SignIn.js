@@ -40,6 +40,8 @@ export default function SignIn() {
             }
         } catch (error) {
             console.error(error);
+            setErrorMessage("Host not found")
+            setErrorFlag(true);
         }
 
     }
