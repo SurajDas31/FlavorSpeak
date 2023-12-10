@@ -1,4 +1,4 @@
-import { Card, CardGroup, Container } from "react-bootstrap";
+import { Card, CardGroup, Col, Container, Row } from "react-bootstrap";
 import img1 from "../home/img/Home-splash-1.jpg"
 import img2 from "../home/img/Home-splash-2.jpg"
 import img3 from "../home/img/Home-splash-3.jpg"
@@ -21,7 +21,6 @@ const Dashboard = () => {
     }, [])
 
     let loadRestaurantData = async () => {
-
         try {
             var res = await fetch(REST_URL + "/api/v1/restaurant/getAll", {
                 method: 'GET',
@@ -29,7 +28,6 @@ const Dashboard = () => {
                     'Authorization': 'Bearer ' + getAccessToken()
                 }
             })
-
             if (res.status === 200) {
                 let data = await res.json()
                 setRestaurant(data)
@@ -44,28 +42,29 @@ const Dashboard = () => {
         <>
             <HomeNavbar />
             <Container className="mt-5" style={{ height: '100vh' }}>
-                <CardGroup>
+                <Row xs={1} md={3} className="g-4">
                     {
                         restaurant.map(r => {
                             return (
-                                <Card>
-                                    <Card.Img variant="top" src={img1} />
-                                    <Card.Body>
-                                        <Card.Title>{r.name}</Card.Title>
-                                        <Card.Text>
-                                            {r.description}
-                                        </Card.Text>
-                                    </Card.Body>
-                                    <Card.Footer>
-                                        <small className="text-muted">{r.city}, {r.state}</small>
-                                    </Card.Footer>
-                                </Card>
+                                <Col >
+                                    <Card className="restaurant-card">
+                                        <Card.Img variant="top" src={img1} />
+                                        <Card.Body>
+                                            <Card.Title>{r.name}</Card.Title>
+                                            <Card.Text>
+                                                {r.description}
+                                            </Card.Text>
+                                        </Card.Body>
+                                        <Card.Footer>
+                                           {r.city}, {r.state} 
+                                        </Card.Footer>
+                                    </Card>
+                                </Col>
                             );
                         })
                     }
-                </CardGroup>
+                </Row>
             </Container>
-
         </>
     );
 }
