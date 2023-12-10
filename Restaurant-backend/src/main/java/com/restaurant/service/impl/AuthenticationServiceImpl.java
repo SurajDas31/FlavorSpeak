@@ -3,17 +3,14 @@ package com.restaurant.service.impl;
 import com.restaurant.model.Person;
 import com.restaurant.model.auth.AuthenticationRequest;
 import com.restaurant.model.auth.AuthenticationResponse;
-import com.restaurant.model.registerUser.UserRegister;
+import com.restaurant.model.auth.registerUser.UserRegister;
 import com.restaurant.repository.UserRepository;
 import com.restaurant.service.AuthenticationService;
 import com.restaurant.service.JWTService;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {

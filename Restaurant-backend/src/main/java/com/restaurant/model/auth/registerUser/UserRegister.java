@@ -1,4 +1,4 @@
-package com.restaurant.model.registerUser;
+package com.restaurant.model.auth.registerUser;
 
 import com.restaurant.model.Role;
 

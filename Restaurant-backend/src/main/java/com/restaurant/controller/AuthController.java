@@ -1,8 +1,7 @@
 package com.restaurant.controller;
 
-import com.restaurant.model.registerUser.UserRegister;
+import com.restaurant.model.auth.registerUser.UserRegister;
 import com.restaurant.service.AuthenticationService;
-import com.restaurant.model.Person;
 import com.restaurant.model.auth.AuthenticationRequest;
 import com.restaurant.model.auth.AuthenticationResponse;
 import org.springframework.http.HttpStatus;
@@ -26,7 +25,6 @@ public class AuthController {
     }
 
     @PostMapping("login")
-
     public ResponseEntity<?> doLogin(@RequestBody AuthenticationRequest request) {
         AuthenticationResponse authenticationResponse = new AuthenticationResponse();
         service.login(request, authenticationResponse);
