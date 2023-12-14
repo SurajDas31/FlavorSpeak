@@ -25,8 +25,8 @@ public class RestaurantController {
         return new ResponseEntity(save, HttpStatus.OK);
     }
 
-    @GetMapping("/get")
-    public ResponseEntity get(@RequestBody int id){
+    @GetMapping("/get/{id}")
+    public ResponseEntity get(@PathVariable("id") int id){
         Restaurant restaurant = restaurantRepository.findById(id);
         if(restaurant == null)
             return new ResponseEntity("{\"status\":\"NOT FOUND\"}", HttpStatus.NOT_FOUND);
@@ -34,7 +34,7 @@ public class RestaurantController {
         return new ResponseEntity(restaurant, HttpStatus.OK);
     }
 
-    @GetMapping("/getAll")
+    @GetMapping("/get")
     public ResponseEntity getAll(){
         List<Restaurant> restaurantList = restaurantRepository.findAll();
 
