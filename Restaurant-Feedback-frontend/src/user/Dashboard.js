@@ -1,19 +1,21 @@
-import { Card, CardGroup, Col, Container, Row } from "react-bootstrap";
+import { Card, Col, Container, Row } from "react-bootstrap";
 import img1 from "../home/img/Home-splash-1.jpg"
-import img2 from "../home/img/Home-splash-2.jpg"
-import img3 from "../home/img/Home-splash-3.jpg"
+
 import HomeNavbar from "../navbar/Navbar";
 import { useEffect, useState } from "react";
 import { REST_URL, getAccessToken, isLoggedIn } from "../util/AuthUtil";
 import { useNavigate } from "react-router-dom";
+import "./Dashboard.css"
+import RestaurantDetails from "./RestaurantDetails";
 
 const Dashboard = () => {
     const navigate = useNavigate()
 
-    const [restaurant, setRestaurant] = useState([])
+    const [modalToggle, setModalToggle] = useState(false)
+    const [restaurantList, setRestaurantList] = useState([])
+    const [restaurant, setRestaurant] = useState({})
 
     useEffect(() => {
-        console.log("UseEffect Dashboard")
         if (!isLoggedIn()) {
             navigate("/")
         }
@@ -22,7 +24,7 @@ const Dashboard = () => {
 
     let loadRestaurantData = async () => {
         try {
-            var res = await fetch(REST_URL + "/api/v1/restaurant/getAll", {
+            var res = await fetch(REST_URL + "/api/v1/restaurant/get", {
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + getAccessToken()
@@ -30,8 +32,7 @@ const Dashboard = () => {
             })
             if (res.status === 200) {
                 let data = await res.json()
-                setRestaurant(data)
-                console.log(restaurant);
+                setRestaurantList(data)
             }
         } catch (error) {
             console.error(error);
@@ -41,13 +42,13 @@ const Dashboard = () => {
     return (
         <>
             <HomeNavbar />
-            <Container className="mt-5" style={{ height: '100vh' }}>
-                <Row xs={1} md={3} className="g-4">
+            <Container className="mt-5">
+                <Row xs={2} md={3} lg={4} className="g-4">
                     {
-                        restaurant.map(r => {
+                        restaurantList.map((r) => {
                             return (
-                                <Col >
-                                    <Card className="restaurant-card">
+                                <Col key={r.id}>
+                                    <Card className="restaurant-card" onClick={() => { setModalToggle(true); setRestaurant(r) }}>
                                         <Card.Img variant="top" src={img1} />
                                         <Card.Body>
                                             <Card.Title>{r.name}</Card.Title>
@@ -56,15 +57,17 @@ const Dashboard = () => {
                                             </Card.Text>
                                         </Card.Body>
                                         <Card.Footer>
-                                           {r.city}, {r.state} 
+                                            {r.city}, {r.state}
                                         </Card.Footer>
                                     </Card>
                                 </Col>
                             );
                         })
                     }
+
                 </Row>
-            </Container>
+                <RestaurantDetails show={modalToggle} onHide={() => setModalToggle(false)} restaurant={restaurant} />
+            </Container >
         </>
     );
 }
