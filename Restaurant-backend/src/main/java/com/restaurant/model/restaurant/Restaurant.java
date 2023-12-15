@@ -9,7 +9,8 @@ import java.util.Set;
 public class Restaurant {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "restaurant_seq")
+    @SequenceGenerator(name = "restaurant_seq", allocationSize = 100)
     private int id;
 
     private String name;

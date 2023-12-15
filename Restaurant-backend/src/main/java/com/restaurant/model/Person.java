@@ -14,7 +14,8 @@ import java.util.Set;
 public class Person implements UserDetails {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "person_seq")
+    @SequenceGenerator(name = "person_seq", allocationSize = 100)
     private int id;
 
     private String firstName;
