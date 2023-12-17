@@ -11,4 +11,5 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Integer>
 
     @Override
     List<Restaurant> findAll();
+
 }

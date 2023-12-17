@@ -3,15 +3,17 @@ package com.restaurant.model.restaurant;
 import com.restaurant.model.Person;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.Set;
 
 @Entity
 public class Restaurant {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "restaurant_seq")
-    @SequenceGenerator(name = "restaurant_seq", allocationSize = 100)
+    @GeneratedValue
     private int id;
+
+    private Date lastModifiedDate = new Date();
 
     private String name;
 
@@ -34,6 +36,14 @@ public class Restaurant {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public Date getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
 
     public String getName() {

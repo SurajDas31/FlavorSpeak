@@ -1,7 +1,9 @@
 package com.restaurant.controller;
 
+import com.restaurant.model.Person_Restaurant;
 import com.restaurant.model.restaurant.Restaurant;
 import com.restaurant.repository.RestaurantRepository;
+import com.restaurant.repository.UserRestaurantRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,10 +16,12 @@ public class RestaurantController {
 
     private RestaurantRepository restaurantRepository;
 
-    public RestaurantController(RestaurantRepository restaurantRepository) {
-        this.restaurantRepository = restaurantRepository;
-    }
+    private UserRestaurantRepository userRestaurantRepository;
 
+    public RestaurantController(RestaurantRepository restaurantRepository, UserRestaurantRepository userRestaurantRepository) {
+        this.restaurantRepository = restaurantRepository;
+        this.userRestaurantRepository = userRestaurantRepository;
+    }
 
     @PostMapping("/save")
     public ResponseEntity save(@RequestBody Restaurant restaurant){
@@ -39,5 +43,12 @@ public class RestaurantController {
         List<Restaurant> restaurantList = restaurantRepository.findAll();
 
         return new ResponseEntity(restaurantList, HttpStatus.OK);
+    }
+
+    @PostMapping("/review/save")
+    public ResponseEntity saveReviews(@RequestBody Person_Restaurant person_restaurant){
+        userRestaurantRepository.save(person_restaurant);
+
+        return new ResponseEntity(person_restaurant, HttpStatus.OK);
     }
 }

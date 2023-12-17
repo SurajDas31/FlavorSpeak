@@ -4,10 +4,7 @@ import com.restaurant.model.Person;
 import com.restaurant.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -19,8 +16,8 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
-    @GetMapping("/get")
-    public ResponseEntity getProfile(@RequestBody int id) {
+    @GetMapping("/get/{id}")
+    public ResponseEntity getProfile(@PathVariable("id") int id) {
         Person person = userRepository.findById(id);
         if (person == null)
             return new ResponseEntity<>("{\"status\":\"Locked\"}", HttpStatus.NOT_FOUND);

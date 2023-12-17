@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -17,6 +18,8 @@ public class Person implements UserDetails {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "person_seq")
     @SequenceGenerator(name = "person_seq", allocationSize = 100)
     private int id;
+
+    private Date lastModifiedDate = new Date();
 
     private String firstName;
 
@@ -31,9 +34,7 @@ public class Person implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany()
-    @JoinTable(joinColumns = {@JoinColumn(name = "person_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "restaurant_id", referencedColumnName = "id")})
+    @OneToMany
     private Set<Restaurant> restaurant;
 
     public Role getRole() {
@@ -50,6 +51,14 @@ public class Person implements UserDetails {
 
     public int getId() {
         return id;
+    }
+
+    public Date getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
 
     public String getFirstName() {
