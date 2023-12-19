@@ -1,9 +1,9 @@
 package com.restaurant.service;
 
-import com.restaurant.model.Person;
 import com.restaurant.model.auth.AuthenticationRequest;
 import com.restaurant.model.auth.AuthenticationResponse;
-import com.restaurant.model.registerUser.UserRegister;
+import com.restaurant.model.auth.registerUser.UserRegister;
+
 
 public interface AuthenticationService {
 
