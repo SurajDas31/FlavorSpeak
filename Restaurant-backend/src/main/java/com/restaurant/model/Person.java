@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -16,6 +17,8 @@ public class Person implements UserDetails {
     @Id
     @GeneratedValue
     private int id;
+
+    private Date date = new Date();
 
     private String firstName;
 
@@ -49,6 +52,14 @@ public class Person implements UserDetails {
 
     public int getId() {
         return id;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public String getFirstName() {
@@ -87,19 +98,12 @@ public class Person implements UserDetails {
         this.mobileNo = mobileNo;
     }
 
-    public Set<Restaurant> getRestaurants() {
-        return restaurant;
-    }
-
-    public void setRestaurants(Set<Restaurant> restaurant) {
-        this.restaurant = restaurant;
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
     }
 
+    @JsonIgnore
     @Override
     public String getPassword() {
         return password;
