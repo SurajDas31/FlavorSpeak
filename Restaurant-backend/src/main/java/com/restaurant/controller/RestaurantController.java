@@ -51,7 +51,7 @@ public class RestaurantController {
 
     @GetMapping("/review/get/{id}")
     public ResponseEntity getReview(@PathVariable("id") int id) {
-        List<Person_Restaurant> person_restaurants = userRestaurantRepository.findAllByRestaurantId(id);
+        List<Person_Restaurant> person_restaurants = userRestaurantRepository.findPerson_RestaurantByRestaurantId(id);
         return new ResponseEntity(person_restaurants, HttpStatus.OK);
     }
 
