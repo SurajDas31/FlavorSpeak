@@ -18,7 +18,7 @@ public class Person implements UserDetails {
     @GeneratedValue
     private int id;
 
-    private Date date = new Date();
+    private Date lastModifiedDate = new Date();
 
     private String firstName;
 
@@ -54,12 +54,12 @@ public class Person implements UserDetails {
         return id;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getLastModifiedDate() {
+        return lastModifiedDate;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
 
     public String getFirstName() {
