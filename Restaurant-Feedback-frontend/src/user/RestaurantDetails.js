@@ -12,6 +12,8 @@ const RestaurantDetails = (props) => {
 
     const [apiResult, setApiResult] = useState([]);
 
+    const [reviewComment, setReviewComment] = useState("");
+
     const [oneRating, setOneRating] = useState(0);
     const [twoRating, setTwoRating] = useState(0);
     const [threeRating, setThreeRating] = useState(0);
@@ -29,6 +31,7 @@ const RestaurantDetails = (props) => {
             if (res.status === 200) {
                 let resultData = await res.json()
                 setApiResult(resultData)
+                console.log(apiResult);
 
                 for (const index in resultData) {
                     const element = resultData[index];
@@ -53,10 +56,65 @@ const RestaurantDetails = (props) => {
         }
     }
 
+    const postReview = async () => {
+        try {
+            var res = await fetch(REST_URL + "/api/v1/restaurant/review/save", {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + getAccessToken(),
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    restaurantId: props.restaurant.id,
+                    comment: reviewComment,
+                    rating: star
+                })
+            })
+            if (res.status === 200) {
+                console.log("hua");
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     const ReviewValidation = (value) => {
         setStar(value);
         document.getElementById("postReview").disabled = false;
     }
+
+    const formatDate = (value) => {
+        value = value * 1000;
+        let date = new Date(value);
+        console.log();
+        let currentDate = new Date();
+
+        let year = currentDate.getFullYear() - date.getFullYear();
+        let result = year + "y";
+        if (year < 1) {
+            let day = currentDate.getDay() - date.getDay();
+            result = day + "d";
+            if (day < 1) {
+                let hours = currentDate.getHours() - date.getHours()
+                result = hours + "h";
+                if (hours < 1) {
+                    let minutes = currentDate.getMinutes() - date.getMinutes();
+                    result = minutes + "m";
+                }
+            }
+        }
+        return result;
+    }
+
+    const printRating = (value) => {
+        let result = "";
+        for (let i = 0; i < value; i++) {
+            result += "★";
+        }
+        return result;
+    }
+
+    
 
     return (
         <>
@@ -67,7 +125,7 @@ const RestaurantDetails = (props) => {
                 dialogClassName="modal-90h"
                 centered
                 onShow={() => loadData()}
-                onExit={() => { setFiveRating(0); setFourRating(0); setThreeRating(0); setTwoRating(0); setOneRating(0) }}
+                onExited={() => { setFiveRating(0); setFourRating(0); setThreeRating(0); setTwoRating(0); setOneRating(0) }}
             >
                 <Modal.Header>
                     <Modal.Title id="contained-modal-title-vcenter">
@@ -82,7 +140,7 @@ const RestaurantDetails = (props) => {
                         {props.restaurant.description}
                     </p>
                     <hr></hr>
-                    <div>
+                    <div className="rating-section">
                         <div className="progress-bar-section">
                             <div><p>5</p><ProgressBar variant="warning" now={fiveRating * 100 / apiResult.length} label={fiveRating} /></div>
                             <div><p>4</p><ProgressBar variant="warning" now={fourRating * 100 / apiResult.length} label={fourRating} /></div>
@@ -91,7 +149,10 @@ const RestaurantDetails = (props) => {
                             <div><p>1</p><ProgressBar variant="warning" now={oneRating * 100 / apiResult.length} label={oneRating} /></div>
                         </div>
                         <div className="average-rating-section">
-                            {Number.parseFloat((5 * fiveRating + 4 * fourRating + 3 * threeRating + 2 * twoRating + 1 * oneRating) / apiResult.length).toFixed(1)}
+                            <h5>{(Number.parseFloat((5 * fiveRating + 4 * fourRating + 3 * threeRating + 2 * twoRating + 1 * oneRating) / apiResult.length).toFixed(1))}
+
+                            </h5>
+                            <p>{apiResult.length} reviews</p>
                         </div>
 
                     </div>
@@ -103,7 +164,11 @@ const RestaurantDetails = (props) => {
                             {apiResult.map(r => {
                                 return (
                                     <ul key={r.id} className="review-ul">
-                                        <li><span id="profile-name">{r.person.firstName} {r.person.lastName}</span><span id="user-rating">{r.rating}★ </span></li>
+                                        <li>
+                                            <span id="profile-name">{r.person.firstName} {r.person.lastName}</span>
+                                            <span id="review-time">{formatDate(r.lastModifiedDate)}</span>
+                                            <span id="user-rating"><span id="star">{printRating(r.rating)}</span></span>
+                                        </li>
                                         <li>{r.reviews}</li>
                                     </ul>)
                             })}
@@ -115,6 +180,7 @@ const RestaurantDetails = (props) => {
                         as="textarea"
                         placeholder="Leave your review here"
                         style={{ height: '100px' }}
+                        onChange= {(e) => {setReviewComment(e.target.value) }}
                     />
                     <div className="rate" >
                         <input type="radio" id="star5" name="rate" value="5" onClick={(e) => ReviewValidation(e.target.value)} />
@@ -128,7 +194,7 @@ const RestaurantDetails = (props) => {
                         <input type="radio" id="star1" name="rate" value="1" onClick={(e) => ReviewValidation(e.target.value)} />
                         <label htmlFor="star1" title="text">1 star</label>
                     </div>
-                    <Button id="postReview" disabled>Post Review</Button>
+                    <Button id="postReview" onClick={postReview()} disabled>Post Review</Button>
 
                 </Modal.Footer>
             </Modal>

@@ -2,6 +2,7 @@ package com.restaurant.controller;
 
 import com.restaurant.model.Person_Restaurant;
 import com.restaurant.model.restaurant.Restaurant;
+import com.restaurant.model.restaurant.RestaurantReviewPosting;
 import com.restaurant.repository.RestaurantRepository;
 import com.restaurant.repository.UserRestaurantRepository;
 import org.springframework.http.HttpStatus;
@@ -44,9 +45,10 @@ public class RestaurantController {
     }
 
     @PostMapping("/review/save")
-    public ResponseEntity saveReviews(@RequestBody Person_Restaurant person_restaurant) {
-        userRestaurantRepository.save(person_restaurant);
-        return new ResponseEntity(person_restaurant, HttpStatus.OK);
+    public ResponseEntity saveReviews(@RequestBody RestaurantReviewPosting restaurantReviewPosting) {
+        System.out.println(restaurantReviewPosting);
+
+        return new ResponseEntity("", HttpStatus.OK);
     }
 
     @GetMapping("/review/get/{id}")

@@ -21,7 +21,7 @@ const Dashboard = () => {
         }
         loadRestaurantData();
     }, [])
-
+    
     let loadRestaurantData = async () => {
         try {
             var res = await fetch(REST_URL + "/api/v1/restaurant/get", {
