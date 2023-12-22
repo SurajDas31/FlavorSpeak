@@ -13,7 +13,7 @@ public class Restaurant {
     @GeneratedValue
     private int id;
 
-    private Date lastModifiedDate = new Date();
+    private long lastModifiedDate = System.currentTimeMillis() / 1000L;
 
     private String name;
 
@@ -38,11 +38,11 @@ public class Restaurant {
         this.id = id;
     }
 
-    public Date getLastModifiedDate() {
+    public long getLastModifiedDate() {
         return lastModifiedDate;
     }
 
-    public void setLastModifiedDate(Date lastModifiedDate) {
+    public void setLastModifiedDate(long lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
     }
 

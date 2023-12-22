@@ -18,7 +18,7 @@ public class Person implements UserDetails {
     @GeneratedValue
     private int id;
 
-    private Date lastModifiedDate = new Date();
+    private long lastModifiedDate = System.currentTimeMillis() / 1000L;
 
     private String firstName;
 
@@ -54,11 +54,11 @@ public class Person implements UserDetails {
         return id;
     }
 
-    public Date getLastModifiedDate() {
+    public long getLastModifiedDate() {
         return lastModifiedDate;
     }
 
-    public void setLastModifiedDate(Date lastModifiedDate) {
+    public void setLastModifiedDate(long lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
     }
 
