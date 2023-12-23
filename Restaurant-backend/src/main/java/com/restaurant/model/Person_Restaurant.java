@@ -9,11 +9,11 @@ import java.util.Date;
 public class Person_Restaurant {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "person_seq")
-    @SequenceGenerator(name = "person_seq", allocationSize = 100)
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "person_restaurant_seq")
+    @SequenceGenerator(name = "person_restaurant_seq", allocationSize = 100)
     private int id;
 
-    private Date lastModifiedDate = new Date();
+    private long lastModifiedDate = System.currentTimeMillis() / 1000L;
 
     @ManyToOne
     @JoinColumn(name = "person_id")
@@ -35,11 +35,11 @@ public class Person_Restaurant {
         this.id = id;
     }
 
-    public Date getLastModifiedDate() {
+    public long getLastModifiedDate() {
         return lastModifiedDate;
     }
 
-    public void setLastModifiedDate(Date lastModifiedDate) {
+    public void setLastModifiedDate(long lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
     }
 

@@ -15,11 +15,10 @@ import java.util.Set;
 public class Person implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "person_seq")
-    @SequenceGenerator(name = "person_seq", allocationSize = 100)
+    @GeneratedValue
     private int id;
 
-    private Date lastModifiedDate = new Date();
+    private long lastModifiedDate = System.currentTimeMillis() / 1000L;
 
     private String firstName;
 
@@ -34,7 +33,9 @@ public class Person implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany
+    @OneToMany()
+    @JoinTable(joinColumns = {@JoinColumn(name = "person_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "restaurant_id", referencedColumnName = "id")})
     private Set<Restaurant> restaurant;
 
     public Role getRole() {
@@ -53,11 +54,11 @@ public class Person implements UserDetails {
         return id;
     }
 
-    public Date getLastModifiedDate() {
+    public long getLastModifiedDate() {
         return lastModifiedDate;
     }
 
-    public void setLastModifiedDate(Date lastModifiedDate) {
+    public void setLastModifiedDate(long lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
     }
 
@@ -97,19 +98,12 @@ public class Person implements UserDetails {
         this.mobileNo = mobileNo;
     }
 
-    public Set<Restaurant> getRestaurants() {
-        return restaurant;
-    }
-
-    public void setRestaurants(Set<Restaurant> restaurant) {
-        this.restaurant = restaurant;
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
     }
 
+    @JsonIgnore
     @Override
     public String getPassword() {
         return password;

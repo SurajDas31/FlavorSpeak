@@ -3,33 +3,95 @@
     height: 46px;
     padding: 0 10px;
 }
-.rate:not(:checked) > input {
-    position:absolute;
-    top:-9999px;
+
+.rate:not(:checked)>input {
+    position: absolute;
+    top: -9999px;
 }
-.rate:not(:checked) > label {
-    float:right;
-    width:1em;
-    overflow:hidden;
-    white-space:nowrap;
-    cursor:pointer;
-    font-size:30px;
-    color:#ccc;
+
+.rate:not(:checked)>label {
+    float: right;
+    width: 1em;
+    overflow: hidden;
+    white-space: nowrap;
+    cursor: pointer;
+    font-size: 30px;
+    color: #ccc;
 }
-.rate:not(:checked) > label:before {
+
+.rate:not(:checked)>label:before {
     content: '★ ';
 }
-.rate > input:checked ~ label {
-    color: #ffc700;    
+
+.rate>input:checked~label {
+    color: #ffc700;
 }
-.rate:not(:checked) > label:hover,
-.rate:not(:checked) > label:hover ~ label {
-    color: #deb217;  
+
+.rate:not(:checked)>label:hover,
+.rate:not(:checked)>label:hover~label {
+    color: #deb217;
 }
-.rate > input:checked + label:hover,
-.rate > input:checked + label:hover ~ label,
-.rate > input:checked ~ label:hover,
-.rate > input:checked ~ label:hover ~ label,
-.rate > label:hover ~ input:checked ~ label {
+
+.rate>input:checked+label:hover,
+.rate>input:checked+label:hover~label,
+.rate>input:checked~label:hover,
+.rate>input:checked~label:hover~label,
+.rate>label:hover~input:checked~label {
     color: #c59b08;
+}
+
+.review-ul {
+    list-style: none;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.review-ul #star {
+    color: #deb217;
+}
+
+.review-ul #profile-name {
+    font-weight: bold;
+}
+
+#user-rating {
+    float: right;
+}
+
+.rating-section {
+    display: flex;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.progress-bar-section {
+    width: 100%;
+}
+
+.progress-bar-section>div {
+    padding-bottom: 5px;
+}
+
+.progress-bar-section>div>div {
+    background-color: transparent !important;
+}
+
+.progress-bar-section>div>p {
+    float: left;
+    padding-right: 5px;
+    margin: auto;
+    margin-top: -5px;
+}
+
+.average-rating-section {
+    width: 100%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#review-time {
+    color: rgb(102, 99, 99);
+    padding-left: 5px;
 }
