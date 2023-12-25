@@ -4,7 +4,10 @@ import com.restaurant.model.Person_Restaurant;
 import com.restaurant.model.restaurant.Restaurant;
 import com.restaurant.model.restaurant.RestaurantReviewPosting;
 import com.restaurant.repository.RestaurantRepository;
+import com.restaurant.repository.UserRepository;
 import com.restaurant.repository.UserRestaurantRepository;
+import com.restaurant.service.RestaurantService;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,9 +22,12 @@ public class RestaurantController {
 
     private UserRestaurantRepository userRestaurantRepository;
 
-    public RestaurantController(RestaurantRepository restaurantRepository, UserRestaurantRepository userRestaurantRepository) {
+    private RestaurantService restaurantService;
+
+    public RestaurantController(RestaurantRepository restaurantRepository, UserRestaurantRepository userRestaurantRepository, RestaurantService restaurantService) {
         this.restaurantRepository = restaurantRepository;
         this.userRestaurantRepository = userRestaurantRepository;
+        this.restaurantService = restaurantService;
     }
 
     @PostMapping("/save")
@@ -45,8 +51,9 @@ public class RestaurantController {
     }
 
     @PostMapping("/review/save")
-    public ResponseEntity saveReviews(@RequestBody RestaurantReviewPosting restaurantReviewPosting) {
+    public ResponseEntity saveReviews(@RequestBody RestaurantReviewPosting restaurantReviewPosting, @RequestHeader(HttpHeaders.AUTHORIZATION) String authorization) {
         System.out.println(restaurantReviewPosting);
+        restaurantService.saveReviews(restaurantReviewPosting, authorization);
 
         return new ResponseEntity("", HttpStatus.OK);
     }
