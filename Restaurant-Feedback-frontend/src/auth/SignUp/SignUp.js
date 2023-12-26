@@ -1,4 +1,4 @@
-import { Alert, Button, Col, Container, FloatingLabel, Form, Row, Toast } from "react-bootstrap";
+import { Alert, Button, Col, Container, FloatingLabel, Form, Row } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import "./SignUp.css"
 import { useState } from "react";
@@ -34,9 +34,7 @@ export default function SignUp() {
                 headers: { "Content-Type": "application/json" }
             })
 
-            if (res.status === 200) {
-                let data = await res.json()
-                console.log(data);
+            if (res.status === 201) {
                 navigate("/signin")
             } else if (res.status === 409) {
                 setErrorFlag(true);
@@ -47,10 +45,8 @@ export default function SignUp() {
         }
     }
 
-
     return (
         <>
-
             <Container fluid>
                 <Row>
                     <Col sm={8} style={{ padding: 0 + 'px' }}>
