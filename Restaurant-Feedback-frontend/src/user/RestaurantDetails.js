@@ -1,10 +1,8 @@
-import { Button, Form, Modal, ModalBody, ProgressBar } from "react-bootstrap";
+import { Button, Form, Modal, ProgressBar } from "react-bootstrap";
 import { REST_URL, getAccessToken } from "../util/AuthUtil";
 import "./RestaurantDetails.css"
-
-import "./RestaurantDetails.css"
 import { useState } from "react";
-import userEvent from "@testing-library/user-event";
+
 
 const RestaurantDetails = (props) => {
 
@@ -14,11 +12,14 @@ const RestaurantDetails = (props) => {
 
     const [reviewComment, setReviewComment] = useState("");
 
-    const [oneRating, setOneRating] = useState(0);
-    const [twoRating, setTwoRating] = useState(0);
-    const [threeRating, setThreeRating] = useState(0);
-    const [fourRating, setFourRating] = useState(0);
-    const [fiveRating, setFiveRating] = useState(0);
+    const [rating, setRating] = useState({
+        one: 0,
+        two: 0,
+        three: 0,
+        four: 0,
+        five: 0
+    })
+
 
     let loadData = async () => {
         try {
@@ -37,15 +38,15 @@ const RestaurantDetails = (props) => {
                     const element = resultData[index];
 
                     if (element.rating === "5") {
-                        setFiveRating(fiveRating + 1)
+                        setRating((oldRating) => ({ ...oldRating, five: oldRating.five + 1 }))
                     } else if (element.rating === "4") {
-                        setFourRating(fourRating + 1)
+                        setRating((oldRating) => ({ ...oldRating, four: oldRating.four + 1 }))
                     } else if (element.rating === "3") {
-                        setThreeRating(threeRating + 1)
+                        setRating((oldRating) => ({ ...oldRating, three: oldRating.three + 1 }))
                     } else if (element.rating === "2") {
-                        setTwoRating(twoRating + 1)
+                        setRating((oldRating) => ({ ...oldRating, two: oldRating.two + 1 }))
                     } else if (element.rating === "1") {
-                        setOneRating(oneRating + 1)
+                        setRating((oldRating) => ({ ...oldRating, one: oldRating.one + 1 }))
                     }
 
                 }
@@ -114,7 +115,7 @@ const RestaurantDetails = (props) => {
         return result;
     }
 
-    
+
 
     return (
         <>
@@ -125,7 +126,7 @@ const RestaurantDetails = (props) => {
                 dialogClassName="modal-90h"
                 centered
                 onShow={() => loadData()}
-                onExited={() => { setFiveRating(0); setFourRating(0); setThreeRating(0); setTwoRating(0); setOneRating(0) }}
+                onExited={() => setRating({ one: 0, two: 0, three: 0, four: 0, five: 0 })}
             >
                 <Modal.Header>
                     <Modal.Title id="contained-modal-title-vcenter">
@@ -142,14 +143,14 @@ const RestaurantDetails = (props) => {
                     <hr></hr>
                     <div className="rating-section">
                         <div className="progress-bar-section">
-                            <div><p>5</p><ProgressBar variant="warning" now={fiveRating * 100 / apiResult.length} label={fiveRating} /></div>
-                            <div><p>4</p><ProgressBar variant="warning" now={fourRating * 100 / apiResult.length} label={fourRating} /></div>
-                            <div><p>3</p><ProgressBar variant="warning" now={threeRating * 100 / apiResult.length} label={threeRating} /></div>
-                            <div><p>2</p><ProgressBar variant="warning" now={twoRating * 100 / apiResult.length} label={twoRating} /></div>
-                            <div><p>1</p><ProgressBar variant="warning" now={oneRating * 100 / apiResult.length} label={oneRating} /></div>
+                            <div><p>5</p><ProgressBar variant="warning" now={rating.five * 100 / apiResult.length} label={rating.five} /></div>
+                            <div><p>4</p><ProgressBar variant="warning" now={rating.four * 100 / apiResult.length} label={rating.four} /></div>
+                            <div><p>3</p><ProgressBar variant="warning" now={rating.three * 100 / apiResult.length} label={rating.three} /></div>
+                            <div><p>2</p><ProgressBar variant="warning" now={rating.two * 100 / apiResult.length} label={rating.two} /></div>
+                            <div><p>1</p><ProgressBar variant="warning" now={rating.one * 100 / apiResult.length} label={rating.one} /></div>
                         </div>
                         <div className="average-rating-section">
-                            <h5>{(Number.parseFloat((5 * fiveRating + 4 * fourRating + 3 * threeRating + 2 * twoRating + 1 * oneRating) / apiResult.length).toFixed(1))}
+                            <h5>{(Number.parseFloat((5 * rating.five + 4 * rating.four + 3 * rating.three + 2 * rating.two + 1 * rating.one) / apiResult.length).toFixed(1))}
 
                             </h5>
                             <p>{apiResult.length} reviews</p>
@@ -180,7 +181,7 @@ const RestaurantDetails = (props) => {
                         as="textarea"
                         placeholder="Leave your review here"
                         style={{ height: '100px' }}
-                        onChange= {(e) => {setReviewComment(e.target.value) }}
+                        onChange={(e) => { setReviewComment(e.target.value) }}
                     />
                     <div className="rate" >
                         <input type="radio" id="star5" name="rate" value="5" onClick={(e) => ReviewValidation(e.target.value)} />
@@ -194,7 +195,7 @@ const RestaurantDetails = (props) => {
                         <input type="radio" id="star1" name="rate" value="1" onClick={(e) => ReviewValidation(e.target.value)} />
                         <label htmlFor="star1" title="text">1 star</label>
                     </div>
-                    <Button id="postReview" onClick={postReview()} disabled>Post Review</Button>
+                    <Button id="postReview" onClick={postReview} disabled={star === 0 ? true : false}>Post Review</Button>
 
                 </Modal.Footer>
             </Modal>
