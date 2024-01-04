@@ -7,8 +7,11 @@ import com.restaurant.model.auth.registerUser.UserRegister;
 import com.restaurant.repository.UserRepository;
 import com.restaurant.service.AuthenticationService;
 import com.restaurant.service.JWTService;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,22 +26,24 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final JWTService jwtService;
 
-    public AuthenticationServiceImpl(UserRepository repository, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, JWTService jwtService) {
+    private final UserDetailsService userDetailsService;
+
+    public AuthenticationServiceImpl(UserRepository repository, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, JWTService jwtService, UserDetailsService userDetailsService) {
         this.repository = repository;
         this.authenticationManager = authenticationManager;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
+        this.userDetailsService = userDetailsService;
     }
 
     @Override
     public String signUp(UserRegister userRegister) {
-        System.out.println(userRegister);
+
         Person person = repository.findByEmail(userRegister.getEmail());
 
-        if(person != null){
+        if(person != null) {
             return "User already exists";
         }
-        System.out.println(userRegister.getPassword());
 
         person = new Person();
         person.setFirstName(userRegister.getFirstName());
@@ -88,4 +93,19 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         return response;
     }
+
+    @Override
+    public boolean validAccessToken(String accessToken) {
+        try{
+            String username = jwtService.extractUsername(accessToken);
+            UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
+            System.out.println(userDetails);
+            return jwtService.isTokenValid(accessToken, userDetails);
+        }catch(ExpiredJwtException e){
+            e.printStackTrace();
+        }
+        return false;
+
+    }
+
 }
