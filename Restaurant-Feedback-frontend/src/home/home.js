@@ -19,14 +19,14 @@ const home = () => {
                     </Carousel.Caption>
                 </Carousel.Item>
                 <Carousel.Item>
-                <Image src={Img2} xs={3} md={2} fluid />
+                    <Image src={Img2} xs={3} md={2} fluid />
                     <Carousel.Caption className="caption">
                         <h3>Second slide label</h3>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                     </Carousel.Caption>
                 </Carousel.Item>
                 <Carousel.Item>
-                <Image src={Img3} xs={3} md={2} fluid />
+                    <Image src={Img3} xs={3} md={2} fluid />
                     <Carousel.Caption className="caption">
                         <h3>Third slide label</h3>
                         <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>

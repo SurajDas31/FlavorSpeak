@@ -16,12 +16,15 @@ const Dashboard = () => {
     const [restaurant, setRestaurant] = useState({})
 
     useEffect(() => {
-        if (!isLoggedIn()) {
-            navigate("/")
-        }
+        isLoggedIn().then(res => {
+            if (!res)
+                navigate("/")
+            }
+        );
+
         loadRestaurantData();
     }, [])
-    
+
     let loadRestaurantData = async () => {
         try {
             var res = await fetch(REST_URL + "/api/v1/restaurant/get", {

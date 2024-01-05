@@ -26,8 +26,8 @@ export default function SignIn() {
 
             if (res.status === 200) {
                 let data = await res.json()
-                console.log(data.accessToken);
-                login(data.accessToken, data.refreshToken, data.person.firstName + " " + data.person.lastName);
+                console.log(data);
+                login(data.accessToken, data.refreshToken, data.person.firstName + " " + data.person.lastName, data.person.role);
                 window.location.href = "/auth/dashboard"
             } else if (res.status === 400) {
                 console.log(400);
