@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Button, Container, FloatingLabel, Form, Row, Col, Alert } from "react-bootstrap";
 import "./SignIn.css";
-import { Link } from "react-router-dom";
-import { REST_URL, login } from "../../util/AuthUtil";
+import { Link, useNavigate } from "react-router-dom";
+import { REST_URL, isLoggedIn, login } from "../../util/AuthUtil";
 
 export default function SignIn() {
 
@@ -10,6 +10,15 @@ export default function SignIn() {
     const [password, setPassword] = useState("");
     const [errorFlag, setErrorFlag] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
+
+    const navigate = useNavigate();
+
+    useState(() => {
+        isLoggedIn().then(res => {
+            if(res)
+                navigate("/auth/dashboard");
+        })
+    })
 
     let loginHandler = async (event) => {
         event.preventDefault();
@@ -27,7 +36,7 @@ export default function SignIn() {
             if (res.status === 200) {
                 let data = await res.json()
                 console.log(data);
-                login(data.accessToken, data.refreshToken, data.person.firstName + " " + data.person.lastName, data.person.role);
+                login(data);
                 window.location.href = "/auth/dashboard"
             } else if (res.status === 400) {
                 console.log(400);

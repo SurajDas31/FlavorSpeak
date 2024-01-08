@@ -31,6 +31,10 @@ export const getUserName = () => {
     return localStorage.getItem("username");
 }
 
+export const getUserId = () => {
+    return localStorage.getItem("id");
+}
+
 export const getRole = () => {
     return localStorage.getItem("role");
 }
@@ -48,9 +52,10 @@ export const logout = () => {
     window.location.href = "/"
 }
 
-export const login = (accessToken, refreshToken, username, role) => {
-    localStorage.setItem('accessToken', accessToken)
-    localStorage.setItem('refreshToken', refreshToken)
-    localStorage.setItem('username', username)
-    localStorage.setItem('role', role)
+export const login = (data) => {
+    localStorage.setItem('accessToken', data.accessToken)
+    localStorage.setItem('refreshToken',  data.refreshToken)
+    localStorage.setItem('id',  data.person.id)
+    localStorage.setItem('username',  data.person.firstName + " " + data.person.lastName)
+    localStorage.setItem('role', data.person.role)
 }

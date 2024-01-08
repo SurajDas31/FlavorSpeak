@@ -1,21 +1,21 @@
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import { Link } from 'react-router-dom';
 import { getRole, getUserName, isLoggedIn, logout } from '../util/AuthUtil'
 import { NavDropdown } from 'react-bootstrap';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import Settings from '../user/settings/Settings';
 
 function HomeNavbar() {
 
 
     const [settingsToggle, setSettingToggle] = useState(false);
-    const auth = useRef(false);
+    const [auth, setAuth] = useState(false)
 
     useState(() => {
-        isLoggedIn().then(res => { auth.flag = res });
-        console.log(auth);
+        isLoggedIn().then(res => {
+            setAuth(res)
+        });
     })
 
     return (
@@ -29,7 +29,7 @@ function HomeNavbar() {
                         </Nav>
                         <Nav>
                             {
-                                (!auth.flag) ?
+                                (!auth) ?
                                     <Nav.Link href="/signin">Sign in</Nav.Link>
                                     :
                                     <NavDropdown title={getUserName()} id="basic-nav-dropdown">
@@ -47,7 +47,7 @@ function HomeNavbar() {
                 </Container>
             </Navbar>
 
-            <Settings show={settingsToggle} onHide={() => setSettingToggle(false)}/>
+            <Settings show={settingsToggle} onHide={() => setSettingToggle(false)} />
         </>
     );
 }
