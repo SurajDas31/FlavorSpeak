@@ -2,7 +2,7 @@ package com.restaurant.controller;
 
 import com.restaurant.model.Person;
 import com.restaurant.repository.UserRepository;
-import org.springframework.data.repository.query.Param;
+import com.restaurant.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,8 +13,11 @@ public class UserController {
 
     private UserRepository userRepository;
 
-    public UserController(UserRepository userRepository) {
+    private UserService userService;
+
+    public UserController(UserRepository userRepository, UserService userService) {
         this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     @GetMapping("/get/{id}")
@@ -26,13 +29,9 @@ public class UserController {
         return new ResponseEntity(person, HttpStatus.OK);
     }
 
-    @GetMapping("/get/")
-    public ResponseEntity getProfile(@RequestParam String email) {
-        Person person = userRepository.findByEmail(email);
-        if(person == null)
-            return new ResponseEntity<>("{\"status\":\"Not Found\"}", HttpStatus.NOT_FOUND);
-
-        return new ResponseEntity(person, HttpStatus.OK);
+    @PostMapping("/update")
+    public ResponseEntity updateProfile(@RequestBody Person person){
+        boolean result = userService.updatePerson(person);
+        return new ResponseEntity(result, HttpStatus.OK);
     }
-
 }

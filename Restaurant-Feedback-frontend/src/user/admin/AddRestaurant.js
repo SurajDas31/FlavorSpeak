@@ -1,42 +1,49 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
-import { REST_URL, getAccessToken, getUserId } from "../../util/AuthUtil";
+import { REST_URL, getAccessToken } from "../../util/AuthUtil";
+
+import { ShowSuccessMessage } from "../../util/AlertUtil";
 
 const AddRestaurant = (props) => {
 
-    const [userData, setUserData] = useState({});
+    const [restaurantData, setRestaurantData] = useState({});
+    const [msgToggle, setMsgToggle] = useState(false);
 
-    
+    useEffect(() => { }, [])
 
     const saveRestaurantData = async (event) => {
         event.preventDefault();
-      
+
         try {
-            var res = await fetch(REST_URL + "/api/v1/user/update" , {
+            var res = await fetch(REST_URL + "/api/v1/restaurant/save", {
                 method: 'POST',
                 headers: {
                     'Authorization': 'Bearer ' + getAccessToken(),
-                    "Content-Type": "application/json" 
+                    "Content-Type": "application/json"
                 },
-                body: JSON.stringify(userData)
+                body: JSON.stringify(restaurantData)
             })
-            if (res.status === 200) {
+            if (res.status !== 200) {
                 let data = await res.json();
-               
+                setMsgToggle(true);
+                props.onHide();
+
             }
         } catch (error) {
             console.error(error);
         }
-        console.log(userData);
+
     }
 
     return (
         <>
+            {ShowSuccessMessage(msgToggle, "Data saved successfully")}
             <Modal show={props.show}
                 {...props}
                 size="xl"
                 aria-labelledby="contained-modal-title-vcenter"
                 dialogClassName="modal-90h"
+                onExit={() => setRestaurantData({})}
                 centered
             >
                 <Modal.Header>
@@ -48,27 +55,32 @@ const AddRestaurant = (props) => {
                     <Form onSubmit={saveRestaurantData}>
                         <Form.Group className="mb-3" >
                             <Form.Label>Restaurant Name</Form.Label>
-                            <Form.Control type="text" placeholder="Name" value={userData.firstName} onChange={(e) => { setUserData((old) => ({ ...old, firstName: e.target.value })) }} />
+                            <Form.Control type="text" placeholder="Name" value={restaurantData.name} onChange={(e) => { setRestaurantData((old) => ({ ...old, name: e.target.value })) }} />
                         </Form.Group>
 
                         <Form.Group className="mb-3" >
                             <Form.Label>City</Form.Label>
-                            <Form.Control type="text" placeholder="City" value={userData.lastName} onChange={(e) => { setUserData((old) => ({ ...old, lastName: e.target.value })) }} />
+                            <Form.Control type="text" placeholder="City" value={restaurantData.city} onChange={(e) => { setRestaurantData((old) => ({ ...old, city: e.target.value })) }} />
                         </Form.Group>
 
                         <Form.Group className="mb-3" >
                             <Form.Label>State</Form.Label>
-                            <Form.Control type="text" placeholder="State" value={userData.email} onChange={(e) => { setUserData((old) => ({ ...old, email: e.target.value })) }} />
+                            <Form.Control type="text" placeholder="State" value={restaurantData.state} onChange={(e) => { setRestaurantData((old) => ({ ...old, state: e.target.value })) }} />
                         </Form.Group>
 
                         <Form.Group className="mb-3" >
                             <Form.Label>Owner Name</Form.Label>
-                            <Form.Control type="text" placeholder="Owner name" />
+                            <Form.Control type="text" placeholder="Owner name" value={restaurantData.ownerName} onChange={(e) => { setRestaurantData((old) => ({ ...old, ownerName: e.target.value })) }} />
+                        </Form.Group>
+
+                        <Form.Group className="mb-3" >
+                            <Form.Label>Mobile No.</Form.Label>
+                            <Form.Control type="text" placeholder="Owner name" value={restaurantData.mobileNo} onChange={(e) => { setRestaurantData((old) => ({ ...old, mobileNo: e.target.value })) }} />
                         </Form.Group>
 
                         <Form.Group className="mb-3" >
                             <Form.Label>Description</Form.Label>
-                            <Form.Control type="text" placeholder="Max 200 character" value={userData.mobileNo} onChange={(e) => { setUserData((old) => ({ ...old, mobileNo: e.target.value })) }} />
+                            <Form.Control type="text" placeholder="Max 200 character" value={restaurantData.description} onChange={(e) => { setRestaurantData((old) => ({ ...old, description: e.target.value })) }} />
                         </Form.Group>
 
                         <Button variant="primary" type="submit">Submit</Button>

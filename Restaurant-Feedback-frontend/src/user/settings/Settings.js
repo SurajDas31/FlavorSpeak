@@ -37,7 +37,7 @@ const Settings = (props) => {
             })
             if (res.status === 200) {
                 let data = await res.json();
-               
+                
             }
         } catch (error) {
             console.error(error);
