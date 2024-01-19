@@ -6,12 +6,14 @@ import { NavDropdown } from 'react-bootstrap';
 import { useState } from 'react';
 import Settings from '../user/settings/Settings';
 import AddRestaurant from '../user/admin/AddRestaurant';
+import UserList from '../user/admin/UserList';
 
 function HomeNavbar() {
 
 
     const [settingsToggle, setSettingToggle] = useState(false);
     const [addRestaurantToggle, setAddRestaurantToggle] = useState(false);
+    const [userListToggle, setUserListToggle] = useState(false);
     const [auth, setAuth] = useState(false)
 
     useState(() => {
@@ -38,7 +40,10 @@ function HomeNavbar() {
                                         <NavDropdown.Item href="/auth/dashboard">Dashboard</NavDropdown.Item>
                                         <NavDropdown.Item onClick={() => setSettingToggle(true)}>Settings</NavDropdown.Item>
                                         {(getRole() === 'ADMIN') ?
-                                            <NavDropdown.Item onClick={() => setAddRestaurantToggle(true)}>Add new Restaurant</NavDropdown.Item>
+                                            <>
+                                                <NavDropdown.Item onClick={() => setUserListToggle(true)}>User List</NavDropdown.Item>
+                                                <NavDropdown.Item onClick={() => setAddRestaurantToggle(true)}>Add new Restaurant</NavDropdown.Item>
+                                            </>
                                             : ""}
                                         <NavDropdown.Divider />
                                         <NavDropdown.Item onClick={logout}>
@@ -54,6 +59,8 @@ function HomeNavbar() {
             <Settings show={settingsToggle} onHide={() => setSettingToggle(false)} />
 
             <AddRestaurant show={addRestaurantToggle} onHide={() => setAddRestaurantToggle(false)} />
+
+            <UserList show={userListToggle} onHide={() => setUserListToggle(false)} />
         </>
     );
 }

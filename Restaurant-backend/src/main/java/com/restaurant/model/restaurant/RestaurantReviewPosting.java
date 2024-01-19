@@ -33,7 +33,7 @@ public class RestaurantReviewPosting {
 
     @Override
     public String toString() {
-        return "RestarantReviewPosting{" +
+        return "RestaurantReviewPosting{" +
                 "restaurantId=" + restaurantId +
                 ", reviewComment='" + reviewComment + '\'' +
                 ", rating='" + rating + '\'' +

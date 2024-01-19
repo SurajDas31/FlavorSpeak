@@ -47,8 +47,6 @@ public class RestaurantServiceImpl implements RestaurantService {
         person_restaurant.setReviews(restaurantReviewPosting.getReviewComment());
         person_restaurant.setRating(restaurantReviewPosting.getRating());
 
-        System.out.println(person_restaurant);
-
         userRestaurantRepository.save(person_restaurant);
     }
 }

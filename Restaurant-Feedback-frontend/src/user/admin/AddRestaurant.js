@@ -9,7 +9,6 @@ const AddRestaurant = (props) => {
     const [restaurantData, setRestaurantData] = useState({});
     const [msgToggle, setMsgToggle] = useState(false);
 
-    useEffect(() => { }, [])
 
     const saveRestaurantData = async (event) => {
         event.preventDefault();
@@ -23,7 +22,7 @@ const AddRestaurant = (props) => {
                 },
                 body: JSON.stringify(restaurantData)
             })
-            if (res.status !== 200) {
+            if (res.status === 200) {
                 let data = await res.json();
                 setMsgToggle(true);
                 props.onHide();
@@ -80,7 +79,7 @@ const AddRestaurant = (props) => {
 
                         <Form.Group className="mb-3" >
                             <Form.Label>Description</Form.Label>
-                            <Form.Control type="text" placeholder="Max 200 character" value={restaurantData.description} onChange={(e) => { setRestaurantData((old) => ({ ...old, description: e.target.value })) }} />
+                            <Form.Control type="text" placeholder="Max 200 character" maxLength={200} value={restaurantData.description} onChange={(e) => { setRestaurantData((old) => ({ ...old, description: e.target.value })) }} />
                         </Form.Group>
 
                         <Button variant="primary" type="submit">Submit</Button>

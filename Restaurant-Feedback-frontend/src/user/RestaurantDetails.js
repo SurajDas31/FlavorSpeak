@@ -67,11 +67,20 @@ const RestaurantDetails = (props) => {
                 },
                 body: JSON.stringify({
                     restaurantId: props.restaurant.id,
-                    comment: reviewComment,
+                    reviewComment: reviewComment,
                     rating: star
                 })
             })
             if (res.status === 200) {
+                document.getElementById("star5").checked = false;
+                document.getElementById("star4").checked = false;
+                document.getElementById("star3").checked = false;
+                document.getElementById("star2").checked = false;
+                document.getElementById("star1").checked = false;
+                
+                setStar(0);
+                setReviewComment("");
+                loadData();
                 console.log("hua");
             }
         } catch (error) {
@@ -181,18 +190,19 @@ const RestaurantDetails = (props) => {
                         as="textarea"
                         placeholder="Leave your review here"
                         style={{ height: '100px' }}
+                        value={reviewComment}
                         onChange={(e) => { setReviewComment(e.target.value) }}
                     />
                     <div className="rate" >
-                        <input type="radio" id="star5" name="rate" value="5" onClick={(e) => ReviewValidation(e.target.value)} />
+                        <input type="radio" id="star5" name="rate" value={star} onClick={(e) => ReviewValidation(5)} />
                         <label htmlFor="star5" title="text">5 stars</label>
-                        <input type="radio" id="star4" name="rate" value="4" onClick={(e) => ReviewValidation(e.target.value)} />
+                        <input type="radio" id="star4" name="rate" value={star} onClick={(e) => ReviewValidation(4)} />
                         <label htmlFor="star4" title="text">4 stars</label>
-                        <input type="radio" id="star3" name="rate" value="3" onClick={(e) => ReviewValidation(e.target.value)} />
+                        <input type="radio" id="star3" name="rate" value={star} onClick={(e) => ReviewValidation(3)} />
                         <label htmlFor="star3" title="text">3 stars</label>
-                        <input type="radio" id="star2" name="rate" value="2" onClick={(e) => ReviewValidation(e.target.value)} />
+                        <input type="radio" id="star2" name="rate" value={star} onClick={(e) => ReviewValidation(2)} />
                         <label htmlFor="star2" title="text">2 stars</label>
-                        <input type="radio" id="star1" name="rate" value="1" onClick={(e) => ReviewValidation(e.target.value)} />
+                        <input type="radio" id="star1" name="rate" value={star} onClick={(e) => ReviewValidation(1)} />
                         <label htmlFor="star1" title="text">1 star</label>
                     </div>
                     <Button id="postReview" onClick={postReview} disabled={star === 0 ? true : false}>Post Review</Button>
