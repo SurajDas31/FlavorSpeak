@@ -36,8 +36,7 @@ const Settings = (props) => {
                 body: JSON.stringify(userData)
             })
             if (res.status === 200) {
-                let data = await res.json();
-                
+
             }
         } catch (error) {
             console.error(error);

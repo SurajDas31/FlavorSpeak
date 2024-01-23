@@ -30,6 +30,8 @@ public class Person implements UserDetails {
 
     private String mobileNo;
 
+    private boolean enabled;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 
@@ -99,6 +101,15 @@ public class Person implements UserDetails {
     }
 
     @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
     }
@@ -129,13 +140,20 @@ public class Person implements UserDetails {
         return true;
     }
 
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
 
     @Override
     public String toString() {
-        return "Person{" + "id=" + id + ", firstName='" + firstName + '\'' + ", lastName='" + lastName + '\'' + ", email='" + email + '\'' + ", password='" + password + '\'' + ", mobileNo='" + mobileNo + '\'' + ", role=" + role + '}';
+        return "Person{" +
+                "id=" + id +
+                ", lastModifiedDate=" + lastModifiedDate +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", mobileNo='" + mobileNo + '\'' +
+                ", enabled=" + enabled +
+                ", role=" + role +
+                ", restaurant=" + restaurant +
+                '}';
     }
 }

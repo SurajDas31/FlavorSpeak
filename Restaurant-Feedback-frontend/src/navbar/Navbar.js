@@ -5,8 +5,8 @@ import { getRole, getUserName, isLoggedIn, logout } from '../util/AuthUtil'
 import { NavDropdown } from 'react-bootstrap';
 import { useState } from 'react';
 import Settings from '../user/settings/Settings';
-import AddRestaurant from '../user/admin/AddRestaurant';
-import UserList from '../user/admin/UserList';
+import AddRestaurant from '../user/settings/admin/AddRestaurant';
+import UserList from '../user/settings/admin/UserList';
 
 function HomeNavbar() {
 

@@ -16,7 +16,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean updatePerson(Person person) {
-
         try {
             Person person1 = userRepository.findById(person.getId());
             person1.setFirstName(person.getFirstName());
@@ -25,13 +24,13 @@ public class UserServiceImpl implements UserService {
             person1.setRole(person.getRole());
             person1.setMobileNo(person.getMobileNo());
             person1.setLastModifiedDate(System.currentTimeMillis());
+            person1.setEnabled(true);
 
             userRepository.save(person1);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return false;
     }
 }
