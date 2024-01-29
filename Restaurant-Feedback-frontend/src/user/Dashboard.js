@@ -23,7 +23,7 @@ const Dashboard = () => {
         );
 
         loadRestaurantData();
-    }, [])
+    }, [navigate])
 
     let loadRestaurantData = async () => {
         try {
