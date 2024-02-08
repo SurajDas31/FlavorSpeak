@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { REST_URL, getAccessToken } from "../../../util/AuthUtil";
 import { Backdrop, Box, Fade, Modal, Typography } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import CircleIcon from '@mui/icons-material/Circle';
 import { green, red } from '@mui/material/colors';
 
@@ -105,6 +105,7 @@ const UserList = (props) => {
                     backdrop: {
                         timeout: 500,
                     },
+
                 }}
             >
                 <Fade in={props.show}>
@@ -122,9 +123,17 @@ const UserList = (props) => {
                                     },
                                 },
                             }}
+                            slots={{ toolbar: GridToolbar }}
+                            slotProps={{
+                                toolbar: {
+                                    showQuickFilter: true,
+                                },
+                            }}
                             pageSizeOptions={[5, 25, 50]}
-                            checkboxSelection
                             disableRowSelectionOnClick
+                            disableColumnFilter
+                            disableColumnSelector
+                            disableDensitySelector
                         />
                     </Box>
 
