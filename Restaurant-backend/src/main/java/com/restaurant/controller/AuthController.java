@@ -19,7 +19,7 @@ public class AuthController {
     public AuthController(AuthenticationService service) {
         this.service = service;
     }
-    
+
     @PostMapping("login")
     public ResponseEntity<?> doLogin(@RequestBody AuthenticationRequest request) {
         AuthenticationResponse authenticationResponse = new AuthenticationResponse();
