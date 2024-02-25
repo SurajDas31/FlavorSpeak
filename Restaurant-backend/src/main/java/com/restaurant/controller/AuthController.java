@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/auth/")
-@CrossOrigin("*")
 public class AuthController {
 
     private AuthenticationService service;
@@ -20,12 +19,7 @@ public class AuthController {
     public AuthController(AuthenticationService service) {
         this.service = service;
     }
-
-    @GetMapping()
-    public String home() {
-        return "Chla";
-    }
-
+    
     @PostMapping("login")
     public ResponseEntity<?> doLogin(@RequestBody AuthenticationRequest request) {
         AuthenticationResponse authenticationResponse = new AuthenticationResponse();
