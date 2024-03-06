@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { Button, Container, FloatingLabel, Form, Row, Col, Alert } from "react-bootstrap";
-import "./SignIn.css";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { REST_URL, isLoggedIn, login } from "../../util/AuthUtil";
+import { Avatar, Box, Button, Checkbox, CssBaseline, FormControlLabel, Grid, Paper, Link, TextField, ThemeProvider, Typography, createTheme } from "@mui/material";
+import bg from '../img/auth-bg.jpg'
+import { Card } from "react-bootstrap";
 
 export default function SignIn() {
 
@@ -15,7 +16,7 @@ export default function SignIn() {
 
     useState(() => {
         isLoggedIn().then(res => {
-            if(res)
+            if (res)
                 navigate("/auth/dashboard");
         })
     })
@@ -55,36 +56,89 @@ export default function SignIn() {
 
     }
 
+    const defaultTheme = createTheme();
+
 
     return (
-        <>
-            <Container fluid>
-                <Row>
-                    <Col sm={8} style={{ padding: 0 + 'px' }}>
-                        <div className="left-bg"></div>
-                    </Col>
-                    <Col sm={4} className="SignInLayout">
-                        <Container>
-                            <Alert key={"danger"} variant={"danger"} show={errorFlag}>
-                                {errorMessage}
-                            </Alert>
-                            <Form onSubmit={loginHandler}>
-                                <FloatingLabel controlId="floatingInput" label="Email address" className="mb-3">
-                                    <Form.Control type="email" placeholder="name@example.com" onChange={(e) => setEmail(e.target.value)} required />
-                                </FloatingLabel>
-                                <FloatingLabel controlId="floatingPassword" label="Password" className="mb-3">
-                                    <Form.Control type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} required />
-                                </FloatingLabel>
-                                <div className="SignFormBottomBar">
-                                    <Button type="submit" variant="primary">Sign In</Button>
-                                    <Link to="/signup">Create an account?</Link>
-                                </div>
-                            </Form>
-                        </Container>
-                    </Col>
-                </Row>
-            </Container>
-        </>
+        <ThemeProvider theme={defaultTheme}>
+            <Grid container component="main"
+                sx={{
+                    height: '100vh', backgroundImage: `url(' ${bg} ')`, backgroundRepeat: 'no-repeat',
+                    backgroundColor: (t) =>
+                        t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    display: 'flex', justifyContent: 'flex-end'
+                }}>
+                <CssBaseline />
+                <Grid item component={Card}>
+                    <Box
+                        sx={{
+                            my: 8,
+                            mx: 4,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+
+                        </Avatar>
+                        <Typography component="h1" variant="h5">
+                            Sign in
+                        </Typography>
+                        <Box component="form" noValidate onSubmit={loginHandler} sx={{ mt: 1 }}>
+                            <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="email"
+                                label="Email Address"
+                                name="email"
+                                autoComplete="email"
+                                autoFocus
+                                onChange={(e) => setEmail(e.target.value)}
+                            />
+                            <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                name="password"
+                                label="Password"
+                                type="password"
+                                id="password"
+                                autoComplete="current-password"
+                                onChange={(e) => setPassword(e.target.value)}
+                            />
+                            {/* <FormControlLabel
+                                control={<Checkbox value="remember" color="primary" />}
+                                label="Remember me"
+                            /> */}
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                sx={{ mt: 3, mb: 2 }}
+                            >
+                                Sign In
+                            </Button>
+                            <Grid container sx={{ justifyContent: 'space-around' }}>
+                                <Grid item >
+                                    <Link href="#" variant="body2">
+                                        Forgot password?
+                                    </Link>
+                                </Grid>
+                                <Grid item>
+                                    <Link href="/signup" variant="body2">
+                                        {"Don't have an account?"}
+                                    </Link>
+                                </Grid>
+                            </Grid>
+                        </Box>
+                    </Box>
+                </Grid>
+            </Grid>
+        </ThemeProvider>
     );
 
 }
