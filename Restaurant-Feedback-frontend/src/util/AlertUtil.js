@@ -1,4 +1,4 @@
-import { Alert, IconButton, Snackbar, SnackbarContent } from "@mui/material";
+import { IconButton, Snackbar, SnackbarContent } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 export const ShowAlert = ({toggle, message, handleClose}) => {
    

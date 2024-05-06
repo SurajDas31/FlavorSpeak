@@ -1,5 +1,5 @@
 
-import { REST_URL, getRole, getUserName, isLoggedIn, logout } from '../util/AuthUtil'
+import { getRole, getUserName, isLoggedIn, logout } from '../util/AuthUtil'
 import { useRef, useState } from 'react';
 import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu';
 import Settings from '../user/settings/Settings';
@@ -7,7 +7,7 @@ import AddRestaurant from '../user/settings/admin/AddRestaurant';
 import UserList from '../user/settings/admin/UserList';
 import { AppBar, Avatar, Box, Button, IconButton, Menu, MenuItem, Toolbar, Tooltip, Typography } from '@mui/material';
 import { displayProtectedProfileImage } from '../util/Util';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function HomeNavbar() {
 
@@ -24,9 +24,14 @@ function HomeNavbar() {
 
     const [anchorElUser, setAnchorElUser] = useState(null);
 
+    const [profilePic, setProfilePic] = useState(null);
+
     useState(() => {
         isLoggedIn().then(res => {
             setAuth(res)
+            displayProtectedProfileImage().then(res =>
+                setProfilePic(res)
+            )
         });
     })
 
@@ -114,7 +119,7 @@ function HomeNavbar() {
                             color: 'inherit',
                             textDecoration: 'none',
                         }}>
-                        Flavorspeak
+                        FlavorSpeak
                     </Typography>
 
                     <Box sx={{ position: 'absolute', right: '5%' }}>
@@ -123,7 +128,7 @@ function HomeNavbar() {
                             <>
                                 <Tooltip title="Open settings">
                                     <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                        <Avatar alt={getUserName()} srcSet={`${displayProtectedProfileImage()}`} />
+                                        <Avatar alt={getUserName()} src={`${profilePic}`} />
                                     </IconButton>
                                 </Tooltip>
                                 <Menu
