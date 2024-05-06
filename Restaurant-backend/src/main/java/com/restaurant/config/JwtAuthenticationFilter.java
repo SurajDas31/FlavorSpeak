@@ -5,6 +5,7 @@ import com.restaurant.service.JWTService;
 
 import java.io.IOException;
 
+import org.apache.tomcat.util.http.fileupload.impl.SizeLimitExceededException;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -61,6 +62,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             );
             SecurityContextHolder.getContext().setAuthentication(authToken);
         }
-        filterChain.doFilter(request, response);
+        try{
+            filterChain.doFilter(request, response);
+        }catch (SizeLimitExceededException e){
+            System.out.println("Chla");
+            e.printStackTrace();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 }

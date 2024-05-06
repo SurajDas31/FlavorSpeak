@@ -73,7 +73,7 @@ const Dashboard = () => {
                 </Row>
                
             </Container > */}
-            <Box>
+            <Box sx={{position: 'absolute', top: '64px'}}>
                 <Grid container spacing={3} sx={{ mt: '1px', display: "flex", justifyContent: "center" }} >
                     {restaurantList.map((r) => {
                         return (

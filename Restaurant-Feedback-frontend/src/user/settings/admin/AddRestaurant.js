@@ -2,13 +2,20 @@ import { useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import { REST_URL, getAccessToken } from "../../../util/AuthUtil";
 
-import { ShowSuccessMessage } from "../../../util/AlertUtil";
+import { ShowAlert } from "../../../util/AlertUtil";
 
 const AddRestaurant = (props) => {
 
     const [restaurantData, setRestaurantData] = useState({});
-    const [msgToggle, setMsgToggle] = useState(false);
 
+    const [alertShow, setAlertShow] = useState(false);
+
+    const closeAlert = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setAlertShow(false);
+    };
 
     const saveRestaurantData = async (event) => {
         event.preventDefault();
@@ -23,7 +30,7 @@ const AddRestaurant = (props) => {
                 body: JSON.stringify(restaurantData)
             })
             if (res.status === 200) {
-                setMsgToggle(true);
+                setAlertShow(true);
                 props.onHide();
 
             }
@@ -35,7 +42,8 @@ const AddRestaurant = (props) => {
 
     return (
         <>
-            {ShowSuccessMessage(msgToggle, "Data saved successfully")}
+
+            <ShowAlert toggle={alertShow} handleClose={closeAlert} message={"Data has been saved successfully"} />
             <Modal show={props.show}
                 {...props}
                 size="xl"

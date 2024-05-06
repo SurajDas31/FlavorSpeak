@@ -66,21 +66,22 @@
 
 .progress-bar-section {
     width: 100%;
+    display: grid;
 }
 
 .progress-bar-section>div {
     padding-bottom: 5px;
 }
 
-.progress-bar-section>div>div {
-    background-color: transparent !important;
+.progress-bar-section>div>span {
+    background-color: rgb(212 221 231);
 }
 
 .progress-bar-section>div>p {
     float: left;
     padding-right: 5px;
     margin: auto;
-    margin-top: -5px;
+    margin-top: -10px;
 }
 
 .average-rating-section {

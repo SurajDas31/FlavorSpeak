@@ -24,6 +24,7 @@ public class Person implements UserDetails {
 
     private String lastName;
 
+    @Column(unique = true, nullable = false)
     private String email;
 
     private String password;
@@ -35,9 +36,7 @@ public class Person implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany()
-    @JoinTable(joinColumns = {@JoinColumn(name = "person_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "restaurant_id", referencedColumnName = "id")})
+    @ManyToMany
     private Set<Restaurant> restaurant;
 
     public Role getRole() {

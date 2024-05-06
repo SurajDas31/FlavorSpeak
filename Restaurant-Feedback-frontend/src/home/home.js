@@ -4,13 +4,14 @@ import Img1 from "./img/Home-splash-1.jpg"
 import Img2 from "./img/Home-splash-2.jpg"
 import Img3 from "./img/Home-splash-3.jpg"
 import "./home.js"
+import { Box, Paper, Stack } from "@mui/material";
 
 const home = () => {
 
     return (
         <>
             <HomeNavbar />
-            <Carousel interval={5000}>
+            {/* <Carousel interval={5000}>
                 <Carousel.Item>
                     <Image src={Img1} xs={3} md={2} alt="First slide" fluid />
                     <Carousel.Caption className="caption">
@@ -32,7 +33,23 @@ const home = () => {
                         <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
                     </Carousel.Caption>
                 </Carousel.Item>
-            </Carousel>
+            </Carousel> */}
+            <Box
+                sx={{
+                    display: 'flex',
+                    position: 'absolute',
+                    top: '64px',
+                    '& > :not(style)': {
+                        m: 1,
+                        width: 128,
+                        height: 128,
+                    },
+                }}
+            >
+                <Paper elevation={1} />
+
+                <Paper elevation={3} />
+            </Box>
         </>
     );
 

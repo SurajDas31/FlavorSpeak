@@ -27,7 +27,7 @@ public class Restaurant {
 
     private String state;
 
-    @OneToMany(mappedBy = "restaurant")
+    @ManyToMany(mappedBy = "restaurant")
     private Set<Person> person;
 
     public int getId() {

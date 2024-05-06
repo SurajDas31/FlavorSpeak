@@ -56,7 +56,7 @@ const Settings = (props) => {
             >
                 <Modal.Header>
                     <Modal.Title id="contained-modal-title-vcenter">
-                        Settings
+                        Profile
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>

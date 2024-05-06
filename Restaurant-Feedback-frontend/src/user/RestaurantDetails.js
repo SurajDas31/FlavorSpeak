@@ -1,7 +1,9 @@
-import { Button, Form, Modal, ProgressBar } from "react-bootstrap";
+
+import { Avatar, Box, Button, FormControl, LinearProgress, Modal, TextField } from "@mui/material";
+
 import { REST_URL, getAccessToken } from "../util/AuthUtil";
 import "./RestaurantDetails.css"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 
 const RestaurantDetails = (props) => {
@@ -12,6 +14,16 @@ const RestaurantDetails = (props) => {
 
     const [reviewComment, setReviewComment] = useState("");
 
+    useEffect(() => {
+
+        if (props.show === true) {
+            loadData();
+        } else if (props.show === false) {
+            setRating({ one: 0, two: 0, three: 0, four: 0, five: 0 })
+        }
+
+    }, [props.show])
+
     const [rating, setRating] = useState({
         one: 0,
         two: 0,
@@ -19,6 +31,20 @@ const RestaurantDetails = (props) => {
         four: 0,
         five: 0
     })
+
+    const boxStyle = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        bgcolor: 'background.paper',
+        border: '0px solid #000',
+        boxShadow: 24,
+        pt: 2,
+        px: 4,
+        pb: 3,
+    };
+
 
 
     let loadData = async () => {
@@ -32,7 +58,6 @@ const RestaurantDetails = (props) => {
             if (res.status === 200) {
                 let resultData = await res.json()
                 setApiResult(resultData)
-                console.log(apiResult);
 
                 for (const index in resultData) {
                     const element = resultData[index];
@@ -77,11 +102,12 @@ const RestaurantDetails = (props) => {
                 document.getElementById("star3").checked = false;
                 document.getElementById("star2").checked = false;
                 document.getElementById("star1").checked = false;
-                
+
                 setStar(0);
                 setReviewComment("");
+
+                setRating({ one: 0, two: 0, three: 0, four: 0, five: 0 })
                 loadData();
-                console.log("hua");
             }
         } catch (error) {
             console.error(error);
@@ -96,7 +122,6 @@ const RestaurantDetails = (props) => {
     const formatDate = (value) => {
         value = value * 1000;
         let date = new Date(value);
-        console.log();
         let currentDate = new Date();
 
         let year = currentDate.getFullYear() - date.getFullYear();
@@ -128,53 +153,45 @@ const RestaurantDetails = (props) => {
 
     return (
         <>
-            <Modal show={props.show}
-                {...props}
-                size="xl"
-                aria-labelledby="contained-modal-title-vcenter"
-                dialogClassName="modal-90h"
-                centered
-                onShow={() => loadData()}
-                onExited={() => setRating({ one: 0, two: 0, three: 0, four: 0, five: 0 })}
+            <Modal keepMounted
+                open={props.show}
+                onClose={() => {
+                    setRating({ one: 0, two: 0, three: 0, four: 0, five: 0 })
+                    { props.onHide() }
+                }}
+
             >
-                <Modal.Header>
-                    <Modal.Title id="contained-modal-title-vcenter">
-                        {props.restaurant.name}
-                    </Modal.Title>
-                    <h5>
-                        {props.restaurant.city}, {props.restaurant.state}
-                    </h5>
-                </Modal.Header>
-                <Modal.Body>
-                    <p>
+                <Box sx={{ ...boxStyle }}>
+                    <h2 id="parent-modal-title"> {props.restaurant.name}</h2>
+                    <p id="parent-modal-description">
                         {props.restaurant.description}
                     </p>
-                    <hr></hr>
+
                     <div className="rating-section">
                         <div className="progress-bar-section">
-                            <div><p>5</p><ProgressBar variant="warning" now={rating.five * 100 / apiResult.length} label={rating.five} /></div>
-                            <div><p>4</p><ProgressBar variant="warning" now={rating.four * 100 / apiResult.length} label={rating.four} /></div>
-                            <div><p>3</p><ProgressBar variant="warning" now={rating.three * 100 / apiResult.length} label={rating.three} /></div>
-                            <div><p>2</p><ProgressBar variant="warning" now={rating.two * 100 / apiResult.length} label={rating.two} /></div>
-                            <div><p>1</p><ProgressBar variant="warning" now={rating.one * 100 / apiResult.length} label={rating.one} /></div>
+                            <div><p>5</p><LinearProgress variant="determinate" value={rating.five * 100 / apiResult.length} /></div>
+                            <div><p>4</p><LinearProgress variant="determinate" value={rating.four * 100 / apiResult.length} /></div>
+                            <div><p>3</p><LinearProgress variant="determinate" value={rating.three * 100 / apiResult.length} /></div>
+                            <div><p>2</p><LinearProgress variant="determinate" value={rating.two * 100 / apiResult.length} /></div>
+                            <div><p>1</p><LinearProgress variant="determinate" value={rating.one * 100 / apiResult.length} /></div>
                         </div>
                         <div className="average-rating-section">
-                            <h5>{(Number.parseFloat((5 * rating.five + 4 * rating.four + 3 * rating.three + 2 * rating.two + 1 * rating.one) / apiResult.length).toFixed(1))}
-
+                            <h5>
+                                {(Number.parseFloat((5 * rating.five + 4 * rating.four + 3 * rating.three + 2 * rating.two + 1 * rating.one) / apiResult.length).toFixed(1))}
                             </h5>
                             <p>{apiResult.length} reviews</p>
                         </div>
 
                     </div>
 
-                    <hr></hr>
-                    <Modal.Body scrollable="true">
+                    <Box>
                         <h4>Reviews</h4>
-                        <div className="review-section" >
+                        <Box className="review-section" sx={{ height: 200, overflow: 'auto' }}>
                             {apiResult.map(r => {
                                 return (
                                     <ul key={r.id} className="review-ul">
                                         <li>
+                                            <Avatar alt={r.person.firstName + r.person.lastName} src={REST_URL + "/api/v1/user/get/profile-picture/" + r.person.id} />
                                             <span id="profile-name">{r.person.firstName} {r.person.lastName}</span>
                                             <span id="review-time">{formatDate(r.lastModifiedDate)}</span>
                                             <span id="user-rating"><span id="star">{printRating(r.rating)}</span></span>
@@ -182,32 +199,36 @@ const RestaurantDetails = (props) => {
                                         <li>{r.reviews}</li>
                                     </ul>)
                             })}
-                        </div>
-                    </Modal.Body>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Form.Control
-                        as="textarea"
-                        placeholder="Leave your review here"
-                        style={{ height: '100px' }}
-                        value={reviewComment}
-                        onChange={(e) => { setReviewComment(e.target.value) }}
-                    />
-                    <div className="rate" >
-                        <input type="radio" id="star5" name="rate" value={star} onClick={(e) => ReviewValidation(5)} />
-                        <label htmlFor="star5" title="text">5 stars</label>
-                        <input type="radio" id="star4" name="rate" value={star} onClick={(e) => ReviewValidation(4)} />
-                        <label htmlFor="star4" title="text">4 stars</label>
-                        <input type="radio" id="star3" name="rate" value={star} onClick={(e) => ReviewValidation(3)} />
-                        <label htmlFor="star3" title="text">3 stars</label>
-                        <input type="radio" id="star2" name="rate" value={star} onClick={(e) => ReviewValidation(2)} />
-                        <label htmlFor="star2" title="text">2 stars</label>
-                        <input type="radio" id="star1" name="rate" value={star} onClick={(e) => ReviewValidation(1)} />
-                        <label htmlFor="star1" title="text">1 star</label>
-                    </div>
-                    <Button id="postReview" onClick={postReview} disabled={star === 0 ? true : false}>Post Review</Button>
+                        </Box>
+                    </Box>
 
-                </Modal.Footer>
+                    <FormControl sx={{ width: '100%' }}>
+                        <TextField
+                            multiline
+                            rows={3}
+                            value={reviewComment}
+                            onChange={(e) => { setReviewComment(e.target.value) }}
+                        />
+                    </FormControl>
+
+                    <Box sx={{ display: "flex", justifyContent: "flex-end", alignItems: "center" }}>
+                        <div className="rate" >
+                            <input type="radio" id="star5" name="rate" value={star} onClick={(e) => ReviewValidation(5)} />
+                            <label htmlFor="star5" title="text">5 stars</label>
+                            <input type="radio" id="star4" name="rate" value={star} onClick={(e) => ReviewValidation(4)} />
+                            <label htmlFor="star4" title="text">4 stars</label>
+                            <input type="radio" id="star3" name="rate" value={star} onClick={(e) => ReviewValidation(3)} />
+                            <label htmlFor="star3" title="text">3 stars</label>
+                            <input type="radio" id="star2" name="rate" value={star} onClick={(e) => ReviewValidation(2)} />
+                            <label htmlFor="star2" title="text">2 stars</label>
+                            <input type="radio" id="star1" name="rate" value={star} onClick={(e) => ReviewValidation(1)} />
+                            <label htmlFor="star1" title="text">1 star</label>
+                        </div>
+                        <Button id="postReview" variant="contained" onClick={postReview} disabled={star === 0 ? true : false}>Post Review</Button>
+
+                    </Box>
+
+                </Box>
             </Modal>
         </>
     );

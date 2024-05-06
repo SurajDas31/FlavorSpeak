@@ -45,7 +45,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.cors().and()
                 .csrf().disable().authorizeHttpRequests(req ->
-                        req.antMatchers("/api/v1/auth/**")
+                        req.antMatchers("/api/v1/auth/**", "/api/v1/user/get/profile-picture/**")
                                 .permitAll()
                                 .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
