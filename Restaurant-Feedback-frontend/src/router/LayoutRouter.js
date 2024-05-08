@@ -2,11 +2,12 @@ import { Routes, Route } from "react-router-dom";
 import SignIn from "../auth/SignIn/SignIn";
 import SignUp from "../auth/SignUp/SignUp";
 
-import Home from '../home/home'
+
 import Dashboard from "../user/Dashboard";
+import Home from "../home/Home";
+
 
 export default function LayoutRouter() {
-
 
     return (
 
