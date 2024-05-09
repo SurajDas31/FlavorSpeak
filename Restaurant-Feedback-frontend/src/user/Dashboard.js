@@ -47,33 +47,7 @@ const Dashboard = () => {
     return (
         <>
             <HomeNavbar />
-            {/* <Container className="mt-5">
-                <Row xs={2} md={3} lg={4} className="g-4">
-                    {
-                        restaurantList.map((r) => {
-                            return (
-                                <Col key={r.id}>
-                                    <Card className="restaurant-card" onClick={() => { setModalToggle(true); setRestaurant(r) }}>
-                                        <Card.Img variant="top" src={img1} />
-                                        <Card.Body>
-                                            <Card.Title>{r.name}</Card.Title>
-                                            <Card.Text>
-                                                {r.description}
-                                            </Card.Text>
-                                        </Card.Body>
-                                        <Card.Footer>
-                                            {r.city}, {r.state}
-                                        </Card.Footer>
-                                    </Card>
-                                </Col>
-                            );
-                        })
-                    }
-
-                </Row>
-               
-            </Container > */}
-            <Box sx={{position: 'absolute', top: '64px'}}>
+            <Box sx={{ position: 'absolute', top: '64px' }}>
                 <Grid container spacing={3} sx={{ mt: '1px', display: "flex", justifyContent: "center" }} >
                     {restaurantList.map((r) => {
                         return (
@@ -94,7 +68,7 @@ const Dashboard = () => {
                                     </CardContent>
                                     <CardActions sx={{ position: 'relative', bottom: '-15px', justifyContent: 'center' }}>
                                         <Typography variant="body1">
-                                        <LocationOnIcon/>  {r.city}, {r.state}
+                                            <LocationOnIcon />  {r.city}, {r.state}
                                         </Typography>
                                     </CardActions>
                                 </Card>
